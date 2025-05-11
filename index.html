@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Jeu 3D</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #renderCanvas {
+            width: 100%;
+            height: 100vh;
+            display: none; /* Caché au démarrage */
+        }
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #1a1a1a; /* Fond sombre */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; /* Au-dessus du canvas */
+        }
+        #startButton {
+            padding: 20px 40px;
+            font-size: 48px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: #ff4444;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #startButton:hover {
+            background: #ff6666;
+        }
+        #timer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 5; /* Au-dessus du jeu */
+            display: none; /* Caché au démarrage */
+        }
+        #score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 5; /* Au-dessus du jeu */
+            display: none; /* Caché au démarrage */
+        }
+        #scoreScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #1a1a1a; /* Fond sombre */
+            display: none; /* Caché au démarrage */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; /* Au-dessus du canvas */
+        }
+        #scoreText {
+            font-size: 48px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        #continueButton {
+            padding: 20px 40px;
+            font-size: 36px;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: #44ff44;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #continueButton:hover {
+            background: #66ff66;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Écran d'accueil -->
+    <div id="startScreen">
+        <button id="startButton">Start</button>
+    </div>
+    <!-- Écran d'explication -->
+    <div id="instructionScreen" style="display: none; position: absolute; top: 0; left: 0; 
+    width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); color: white; 
+    z-index: 10; padding: 40px; font-family: Arial; overflow-y: auto;">
+        <h2>Bienvenue dans Dreams Catcher 🌙</h2>
+        <p>
+        Tu incarnes un avatar dans le monde des rêves. Ton objectif est de collecter un maximum de sphères colorées avant la fin du temps imparti.
+        </p>
+        <ul>
+            <li><b>Rouge</b> : +1 point</li>
+            <li><b>Bleue</b> : +2 points</li>
+            <li><b>Jaune</b> : +3 points</li>
+            <li><b>Verte</b> : +3 secondes</li>
+            <li><b>Noire</b> : -5 points 😈</li>
+        </ul>
+        <p>Utilise les touches <b>Z Q S D</b> pour te déplacer.</p>
+        <p style="margin-top: 40px; font-size: 1.2em;">🎮 <b>Si vous voulez commencer, appuyez sur <span style="color: #0f0;">ESPACE</span></b></p>
+    </div>
+
+
+    <!-- Affichage du minuteur -->
+    <div id="timer">Temps restant : 10s</div>
+
+    <!-- Affichage du score pendant le jeu -->
+    <div id="score">Score : 0</div>
+
+    <!-- Écran de score à la fin -->
+    <div id="scoreScreen">
+        <div id="scoreText">Score final : 0</div>
+        <button id="continueButton">Continue</button>
+    </div>
+
+    <!-- Canvas pour le jeu -->
+    <canvas id="renderCanvas"></canvas>
+
+    <!-- Charger Babylon.js via CDN -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+
+    <!-- Charger ton script app.js -->
+    <script src="app.js"></script>
+</body>
+</html>
