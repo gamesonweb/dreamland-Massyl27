@@ -6,6 +6,7 @@ const startScreen = document.getElementById("startScreen");
 const startButton = document.getElementById("startButton");
 const timerDisplay = document.getElementById("timer");
 const scoreDisplay = document.getElementById("score");
+const highestScoreDisplay = document.getElementById("highestScore");
 const scoreScreen = document.getElementById("scoreScreen");
 const scoreText = document.getElementById("scoreText");
 const continueButton = document.getElementById("continueButton");
@@ -36,16 +37,22 @@ const dreamTypes = [
 
 // Démarrage du jeu
 function startGame() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  hasMoved = false;
+
   startScreen.style.display = "none";
   canvas.style.display = "block";
   timerDisplay.style.display = "block";
   scoreDisplay.style.display = "block";
+  highestScoreDisplay.style.display = "block";
 
   timeLeft = 30;
   score = 0;
   hasMoved = false;
   timerDisplay.textContent = `Temps restant : ${timeLeft}s`;
   scoreDisplay.textContent = `Score : ${score}`;
+  highestScoreDisplay.textContent = `Meilleur Score : ${highestScore}`;
   gameRunning = true;
 
   engine = new BABYLON.Engine(canvas, true);
