@@ -123,9 +123,37 @@
       #continueButton:hover {
         background: #66ff66;
       }
+      #authSection {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      #authSection input,
+      #authSection button {
+        margin: 5px;
+        padding: 5px;
+      }
     </style>
   </head>
   <body>
+    <!-- Ecran de connexion -->
+    <div
+      id="authSection"
+      style="
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 20;
+      "
+    >
+      <input type="text" id="username" placeholder="Nom d'utilisateur" />
+      <input type="password" id="password" placeholder="Mot de passe" />
+      <button onclick="login()">Connexion</button>
+      <button onclick="logout()">Déconnexion</button>
+      <button onclick="playAsGuest()">Jouer en invité</button>
+    </div>
     <!-- Écran d'accueil -->
     <div id="startScreen">
       <button id="startButton">Start</button>

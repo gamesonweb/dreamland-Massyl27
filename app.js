@@ -34,7 +34,37 @@ const dreamTypes = [
   { name: "verte", model: "SphereVerte.glb", bonusTime: 3, count: 15 },
   { name: "noir", model: "SphereNoir.glb", points: -5, count: 5 },
 ];
+let currentUser = null;
+const netlifyIdentity = window.netlifyIdentity;
 
+// Initialiser Netlify Identity
+if (netlifyIdentity) {
+  netlifyIdentity.on("init", (user) => (currentUser = user));
+  netlifyIdentity.on("login", (user) => {
+    currentUser = user;
+    loadUserBestScore();
+  });
+  netlifyIdentity.on("logout", () => (currentUser = null));
+}
+
+// Nouvelle fonction pour sauvegarder le score
+async function saveScore(score) {
+  if (!currentUser) return;
+
+  try {
+    const response = await fetch("/.netlify/functions/save-score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: currentUser.id,
+        score: score,
+      }),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Erreur sauvegarde score:", error);
+  }
+}
 // Démarrage du jeu
 function startGame() {
   clearInterval(timerInterval);
@@ -77,7 +107,7 @@ function startGame() {
 
   BABYLON.SceneLoader.ImportMesh(
     "",
-    "./assets/",
+    "assets/",
     "Terrain.glb",
     scene,
     function (meshes) {
@@ -133,7 +163,7 @@ function startGame() {
 
       BABYLON.SceneLoader.ImportMesh(
         "",
-        "./assets/",
+        "assets/",
         "Avatar.glb",
         scene,
         function (meshes, _, __, animationGroups) {
@@ -273,7 +303,7 @@ function loadDreams() {
   dreamTypes.forEach((type) => {
     BABYLON.SceneLoader.ImportMesh(
       "",
-      "./assets/",
+      "assets/",
       type.model,
       scene,
       function (meshes) {
@@ -373,7 +403,18 @@ function handleKeyUp(e) {
 }
 
 // Fin de partie
-function endGame() {
+async function endGame() {
+  if (currentUser) {
+    try {
+      const savedScore = await saveScore(score);
+      highestScoreDisplay.textContent = `Meilleur Score : ${savedScore.best_score}`; // Modifier ici
+    } catch (error) {
+      console.error("Erreur sauvegarde score:", error);
+    }
+  }
+  clearInterval(timerInterval);
+  timerInterval = null;
+
   gameRunning = false;
   [stillAnim, runForwardAnim, runBackwardAnim, rightAnim, leftAnim].forEach(
     (a) => a?.stop()
