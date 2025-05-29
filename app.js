@@ -357,13 +357,19 @@ function handleKeyDown(e) {
   if (!gameRunning) return;
 
   // Si première action → on démarre le chrono
-  if (!hasMoved && ["z", "q", "s", "d"].includes(e.key.toLowerCase())) {
+  if (
+    !hasMoved &&
+    ["z", "q", "s", "d", "w", "a"].includes(e.key.toLowerCase())
+  ) {
     hasMoved = true;
     startTimer();
   }
 
   switch (e.key.toLowerCase()) {
     case "z":
+      moveForward = true;
+      break;
+    case "w":
       moveForward = true;
       break;
     case "s":
@@ -375,12 +381,22 @@ function handleKeyDown(e) {
     case "q":
       moveLeft = true;
       break;
+    case "a":
+      moveLeft = true;
+      break;
   }
 }
 function handleKeyUp(e) {
   if (!gameRunning) return;
   switch (e.key.toLowerCase()) {
     case "z":
+      moveForward = false;
+      if (runForwardAnim?.isPlaying) {
+        runForwardAnim.stop();
+        stillAnim.start(true);
+      }
+      break;
+    case "w":
       moveForward = false;
       if (runForwardAnim?.isPlaying) {
         runForwardAnim.stop();
@@ -396,6 +412,10 @@ function handleKeyUp(e) {
       if (rightAnim?.isPlaying) rightAnim.stop();
       break;
     case "q":
+      moveLeft = false;
+      if (leftAnim?.isPlaying) leftAnim.stop();
+      break;
+    case "a":
       moveLeft = false;
       if (leftAnim?.isPlaying) leftAnim.stop();
       break;
