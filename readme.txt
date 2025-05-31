@@ -1,5 +1,8 @@
 Dreams Catcher - Documentation Technique
 
+Lien d'hebergement : 
+https://dream-catcher-game.netlify.app/
+
 1. Présentation du Projet
 --------------------------
 Jeu 3D développé avec Babylon.js où le joueur incarne un avatar collectant des rêves (sphères colorées) dans un monde onirique. Le but est d'obtenir le meilleur score possible avant la fin du temps imparti.
